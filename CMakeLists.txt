@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(lua VERSION 5.4.0)
+project(
+    lua 
+    VERSION 5.4.0
+    LANGUAGES C)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
 
 set(LUA_LIB_SRCS 
     "lapi.c"
@@ -40,13 +42,15 @@ set(LUA_LIB_SRCS
     "linit.c"
 )
 
-add_library(lua_static STATIC ${LUA_LIB_SRCS})
-set_target_properties(lua_static PROPERTIES OUTPUT_NAME "lua")
-target_include_directories(lua_static PUBLIC "include/lua")
+add_library(lua_core ${LUA_LIB_SRCS})
+add_library(lua::lua ALIAS lua_core)
+
+set_target_properties(lua_core PROPERTIES OUTPUT_NAME "lua")
+target_include_directories(lua_core PUBLIC "include/lua")
 
 set(LUA_DEFINITIONS)
 if(UNIX)
     list(APPEND LUA_DEFINITIONS LUA_USE_POSIX)
 endif()
-target_compile_definitions(lua_static PUBLIC ${LUA_DEFINITIONS})
-target_compile_options(lua_static PRIVATE "-Wall" "-Wextra")
+target_compile_definitions(lua_core PUBLIC ${LUA_DEFINITIONS})
+target_compile_options(lua_core PRIVATE "-Wall" "-Wextra")
