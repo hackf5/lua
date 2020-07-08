@@ -5,12 +5,6 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
 
-# output paths
-set(OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
-
 set(LUA_LIB_SRCS 
     "lapi.c"
     "lcode.c"
@@ -48,6 +42,8 @@ set(LUA_LIB_SRCS
 
 add_library(lua_static STATIC ${LUA_LIB_SRCS})
 set_target_properties(lua_static PROPERTIES OUTPUT_NAME "lua")
+target_include_directories(lua_static PUBLIC "include/lua")
+
 set(LUA_DEFINITIONS)
 if(UNIX)
     list(APPEND LUA_DEFINITIONS LUA_USE_POSIX)
