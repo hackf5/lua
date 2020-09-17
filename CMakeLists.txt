@@ -46,7 +46,7 @@ add_library(lua_core ${LUA_LIB_SRCS})
 add_library(lua::lua ALIAS lua_core)
 
 set_target_properties(lua_core PROPERTIES OUTPUT_NAME "lua")
-target_include_directories(lua_core PUBLIC "include/lua")
+target_include_directories(lua_core PRIVATE "include/lua")
 
 set(LUA_DEFINITIONS)
 if(UNIX)
